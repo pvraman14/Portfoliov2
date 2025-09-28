@@ -1,0 +1,20 @@
+@import './global.scss';
+
+.app { min-height: 100vh; display: flex; flex-direction: column; gap: 2rem; padding: 1rem; }
+.app__header { display:flex; justify-content: space-between; align-items:center; }
+.app__title { font-size: 1.25rem; margin: 0; }
+.app__controls { display:flex; gap: 0.5rem; }
+
+.app__main { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+
+.hero__card { padding: 1.25rem; background: var(--card); border-radius: 12px; box-shadow: 0 4px 14px rgba(2,6,23,0.06); }
+
+.projects { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+@media (min-width: 700px) {
+  .projects { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1000px) {
+  .projects { grid-template-columns: repeat(3, 1fr); }
+}

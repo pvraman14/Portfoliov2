@@ -1,0 +1,8 @@
+.project-card { background: var(--card); border-radius: 10px; padding: 1rem; display:flex; gap: 1rem; align-items:flex-start; }
+.project-card__media { width: 140px; height: 90px; flex: 0 0 140px; display:flex; align-items:center; justify-content:center; border-radius:8px; background: rgba(0,0,0,0.04); }
+.placeholder-image { opacity: 0.5; }
+.project-card__content { flex:1 }
+.project-card__title { margin:0 0 0.25rem 0 }
+.project-card__tags { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem }
+.tag { font-size:0.75rem; padding:0.25rem 0.5rem; background: rgba(0,0,0,0.04); border-radius:6px }
+.project-card__actions { margin-top:0.75rem; display:flex; gap:0.5rem }
