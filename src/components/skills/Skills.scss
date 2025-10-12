@@ -1,0 +1,61 @@
+@import '../../styles/global.scss';
+@import '../../styles/variables';
+
+.skills-section {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .skills-icons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+
+        .skill-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            svg {
+                width: 4rem;
+                height: 4rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .skills-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .skill-icon svg {
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .skills-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .skills-icons {
+        gap: 0.5rem;
+    }
+
+    .skill-icon svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

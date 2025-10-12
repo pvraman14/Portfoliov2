@@ -5,6 +5,7 @@ import ThemeToggle from './components/ThemeToggle'
 import Terminal from './components/Terminal.tsx'
 import Projects from './components/Projects'
 import './styles/app.scss'
+import Skills from './components/skills/Skills.tsx'
 
 const AppContent: React.FC = () => {
   const { mounted } = useTheme()
@@ -52,6 +53,8 @@ const AppContent: React.FC = () => {
             <p>Full-stack engineer building delightful application experiences, specializing in Frontend Technologies with React, NextJs, Angular and TypeScript.</p>
           </motion.div>
         </section>
+
+        <Skills/>
 
         <section className="projects-section">
           <h3>Projects</h3>

@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import './Terminal.module.scss'
+import './Terminal.scss'
 
 type Props = { id?: string }
 

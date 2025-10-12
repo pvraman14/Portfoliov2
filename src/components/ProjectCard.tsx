@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import './ProjectCard.module.scss'
+import './ProjectCard.scss'
 
 type ProjectProps = {
   id: string
