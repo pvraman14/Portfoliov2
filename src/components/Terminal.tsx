@@ -1,11 +1,11 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import './Terminal.scss'
 
-type Props = { id?: string }
-
-export type TerminalHandle = {
-  toggleOpen: () => void
+type Props = {
+  id?: string
+  isOpen: boolean
+  onClose: () => void
 }
 
 const COMMANDS: Record<string, string> = {
@@ -15,27 +15,15 @@ const COMMANDS: Record<string, string> = {
   contact: `Email: your.email@example.com`,
 }
 
-const Terminal = forwardRef<TerminalHandle, Props>(({ id = 'dev-terminal' }, ref) => {
-  const [open, setOpen] = useState(false)
+const Terminal: React.FC<Props> = ({ id = 'dev-terminal', isOpen, onClose }) => {
   const [lines, setLines] = useState<string[]>(["Welcome to the dev terminal. Type 'help'."])
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  useImperativeHandle(ref, () => ({ toggleOpen: () => setOpen(v => !v) }))
-
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === '`') {
-        setOpen(o => !o)
-        setTimeout(() => inputRef.current?.focus(), 100)
-      }
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 100)
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [])
-
-  useEffect(() => {
-    if (open) inputRef.current?.focus()
-  }, [open])
+  }, [isOpen])
 
   const run = (raw: string) => {
     const cmd = raw.trim()
@@ -47,22 +35,22 @@ const Terminal = forwardRef<TerminalHandle, Props>(({ id = 'dev-terminal' }, ref
 
   return (
     <AnimatePresence>
-      {open && (
+      {isOpen && (
         <motion.aside
           id={id}
           key="terminal"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.25 }}
-          className="terminal"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          className="terminal terminal--fullscreen"
           role="dialog"
           aria-label="Developer terminal"
         >
           <div className="terminal__header">
             <span>dev@portfolio</span>
             <div className="terminal__controls">
-              <button onClick={() => setOpen(false)} aria-label="Close terminal">✕</button>
+              <button onClick={onClose} aria-label="Close terminal">✕</button>
             </div>
           </div>
 
@@ -93,7 +81,7 @@ const Terminal = forwardRef<TerminalHandle, Props>(({ id = 'dev-terminal' }, ref
       )}
     </AnimatePresence>
   )
-})
+}
 
 Terminal.displayName = 'Terminal'
 

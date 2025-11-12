@@ -5,38 +5,303 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 1rem;
-  background: #EEAECA;
-  background: linear-gradient(201deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  padding: 0;
+  // background: #EEAECA;
+  // background: linear-gradient(201deg, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
 
 .app__header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 1.5rem;
+
+  // Glassmorphism / Mirror effect
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+  // Subtle animation on scroll
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+// Dark mode glassmorphism
+[data-theme='dark'] {
+  .app__header {
+    background: rgba(7, 16, 34, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.05) 0%,
+        rgba(59, 130, 246, 0) 100%
+      );
+    }
+  }
 }
 
 .app__title {
   font-size: 1.25rem;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .app__controls {
   display: flex;
   gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  align-items: center;
+}
+
+.btn {
+  &--icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1.125rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    &:hover {
+      border-color: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Dark mode button styles
+[data-theme='dark'] {
+  .btn--icon {
+    &:hover {
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+  }
 }
 
 .app__main {
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr;
+  padding: 1rem;
+  padding-top: 2rem;
 }
 
 .hero__card {
-  padding: 1.25rem;
+  padding: 3rem 2rem;
   background: var(--card);
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(2, 6, 23, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+
+  .hero__header {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 2rem 0;
+    background: linear-gradient(135deg, var(--accent), #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .hero-logo {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    object-fit: cover;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 4px solid var(--bg);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.18);
+    }
+
+    @media (max-width: 768px) {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .hero__description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text);
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Dark mode specific styles for hero
+[data-theme='dark'] {
+  .hero__card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+    .hero-logo {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+      &:hover {
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+      }
+    }
+  }
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--card);
+    color: var(--text);
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 119, 181, 0.1), rgba(0, 119, 181, 0.2));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    svg {
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, #0077b5, #00a0dc);
+      color: white;
+
+      &::before {
+        opacity: 1;
+      }
+
+      svg {
+        transform: rotate(5deg);
+      }
+    }
+
+    &:nth-child(2):hover {
+      background: linear-gradient(135deg, #333, #24292e);
+    }
+
+    &:nth-child(3):hover {
+      background: linear-gradient(135deg, #ea4335, #d93025);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+
+    &__item {
+      width: 45px;
+      height: 45px;
+      font-size: 1.3rem;
+    }
+  }
 }
 
 .projects {
@@ -54,5 +319,38 @@
 @media (min-width: 1000px) {
   .projects {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// Responsive header adjustments
+@media (max-width: 768px) {
+  .app__header {
+    padding: 0.75rem 1rem;
+  }
+
+  .app__title {
+    font-size: 1rem;
+  }
+
+  .app__main {
+    padding: 0.75rem;
+    padding-top: 1.5rem;
+  }
+}
+
+// Enhanced scroll behavior for header
+@media (prefers-reduced-motion: no-preference) {
+  .app__header {
+    &:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  [data-theme='dark'] {
+    .app__header {
+      &:hover {
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+      }
+    }
   }
 }

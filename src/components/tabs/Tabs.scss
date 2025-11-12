@@ -1,0 +1,191 @@
+.experience-wrapper {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+
+    .experience-main-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--accent), #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+    }
+}
+
+.tab__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .tab__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        background: var(--card);
+        padding: 0.5rem;
+        width: fit-content;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        position: relative;
+
+        .tab__button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+            user-select: none;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.03);
+            }
+
+            &.active {
+                background: linear-gradient(135deg, var(--accent), #60a5fa);
+                color: white;
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+                transform: translateY(-1px);
+
+                &:hover {
+                    background: linear-gradient(135deg, var(--accent), #60a5fa);
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+                }
+            }
+        }
+    }
+
+    .tab__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        background: var(--card);
+        padding: 2rem;
+        border-radius: 16px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+
+        .logo__container {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .logo {
+                max-width: 150px;
+                height: auto;
+                object-fit: contain;
+            }
+        }
+
+        > p {
+            width: 100%;
+        }
+    }
+}
+
+// Dark mode specific adjustments
+[data-theme='dark'] {
+    .tab__container {
+        .tab__header {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            .tab__button {
+                &:hover {
+                    background: rgba(255, 255, 255, 0.05);
+                }
+
+                &.active {
+                    background: linear-gradient(135deg, #3b82f6, #2563eb);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                }
+            }
+        }
+
+        .tab__content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            .logo__container {
+                background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .experience-wrapper {
+        padding: 0.75rem;
+
+        .experience-main-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+        }
+    }
+
+    .tab__container {
+        .tab__header {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem;
+
+            .tab__button {
+                width: 100%;
+                text-align: center;
+                padding: 0.875rem 1rem;
+            }
+        }
+
+        .tab__content {
+            padding: 1.5rem;
+
+            .logo__container {
+                .logo {
+                    max-width: 120px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .experience-wrapper {
+        padding: 0.5rem;
+
+        .experience-main-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    }
+}
