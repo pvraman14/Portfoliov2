@@ -3,17 +3,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Aera, Coditas } from "./Experience";
 import './Tabs.scss';
+import aeraLogo from '../../assets/logo_aera.svg';
+import coditasLogo from '../../assets/coditas_logo.webp';
 
 const companyData = [
   {
     company: "Aera Technolgy",
     description: <Aera/>,
-    logo: "../src/assets/logo_aera.svg",
+    logo: aeraLogo,
   },
   {
     company: "Coditas",
     description: <Coditas/>,
-    logo: "../src/assets/coditas_logo.webp",
+    logo: coditasLogo,
   },
 ];
 

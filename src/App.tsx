@@ -11,6 +11,7 @@ import Contact from './components/Contact.tsx'
 import ContactModal from './components/ContactModal.tsx'
 import Footer from './components/Footer.tsx'
 import { FaLinkedin, FaGithub, FaEnvelope, FaTerminal } from 'react-icons/fa'
+import profileImage from './assets/profile2.png'
 
 const AppContent: React.FC = () => {
   const { mounted } = useTheme()
@@ -95,8 +96,8 @@ const AppContent: React.FC = () => {
             </motion.h2>
 
             <motion.img
-              src="../src/assets/profile2.png"
-              alt="logo"
+              src={profileImage}
+              alt="Profile picture"
               className='hero-logo'
               initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}

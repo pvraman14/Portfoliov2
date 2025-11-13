@@ -9,8 +9,11 @@ This is a personal portfolio website built with React, TypeScript, Vite, and SCS
 ## Development Commands
 
 ```bash
-# Start development server
+# Start development server (frontend only)
 npm run dev
+
+# Start development server with Netlify Functions
+npm run dev:netlify
 
 # Build for production
 npm run build
@@ -25,6 +28,8 @@ npm run lint
 npm run format
 ```
 
+**Note**: Use `npm run dev:netlify` when testing the contact form or any Netlify Functions locally.
+
 ## Architecture
 
 ### Core Application Structure
@@ -37,11 +42,13 @@ npm run format
 
 #### Theme System
 - **ThemeContext** (`src/contexts/ThemeContext.tsx`): Global theme state management
-  - Supports 'light' and 'dark' modes
+  - Supports 'system', 'light', and 'dark' modes
   - Persists theme preference to localStorage with key `'portfolio-theme'`
-  - Respects system preference on first load via `prefers-color-scheme`
+  - Auto-detects and syncs with system theme preference via `prefers-color-scheme`
+  - Listens for real-time OS theme changes and updates automatically (when in 'system' mode)
   - Sets `data-theme` attribute on document root for CSS variable switching
-  - Exports `useTheme()` hook for consuming theme state
+  - Exports `useTheme()` hook with `theme`, `actualTheme`, `toggle`, and `mounted` properties
+  - Theme toggle cycles: System → Light → Dark → System
 
 #### Terminal Component
 - **Terminal** (`src/components/Terminal.tsx`): Interactive CLI-style terminal overlay
@@ -94,7 +101,15 @@ To add new terminal commands:
 2. Update help text in the same file
 
 ### Asset References
-Assets are referenced with relative paths from src: `"../src/assets/filename"`
+Assets must be imported at the top of the file for proper bundling in production:
+```typescript
+import logo from './assets/logo.svg'
+import image from './assets/image.png'
+
+// Then use in JSX
+<img src={logo} alt="Logo" />
+```
+**Important**: Never use string paths like `"../src/assets/filename"` as they won't work in production builds.
 
 ### Keyboard Shortcuts
 - Ctrl/Cmd + ` toggles terminal (defined in both App.tsx:17-25 and Terminal.tsx:26-34)
