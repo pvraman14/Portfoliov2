@@ -50,36 +50,45 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) return
-    
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
-    
+
     try {
-      // Create mailto link with form data
-      const subject = encodeURIComponent(`Portfolio Contact: Message from ${formData.name}`)
-      const body = encodeURIComponent(
-        `Name: ${formData.name}\n` +
-        `Email: ${formData.email}\n\n` +
-        `Message:\n${formData.message}`
-      )
-      
-      const mailtoLink = `mailto:pvenkatraman1400@gmail.com?subject=${subject}&body=${body}`
-      
-      // Open default email client
-      window.location.href = mailtoLink
-      
-      // Reset form after short delay
-      setTimeout(() => {
+      // Call Netlify Function to send email
+      const response = await fetch('/.netlify/functions/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
         setFormData({ name: '', email: '', message: '' })
         setSubmitStatus('success')
-        setIsSubmitting(false)
-      }, 1000)
-      
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle')
+        }, 5000)
+      } else {
+        throw new Error(data.error || 'Failed to send message')
+      }
+
     } catch (error) {
       console.error('Error:', error)
       setSubmitStatus('error')
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle')
+      }, 5000)
+    } finally {
       setIsSubmitting(false)
     }
   }
@@ -188,7 +197,7 @@ const Contact: React.FC = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Message sent! Your email client should open shortly.
+              Message sent successfully! I'll get back to you soon.
             </motion.div>
           )}
 
