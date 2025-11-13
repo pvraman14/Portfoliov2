@@ -295,6 +295,85 @@
     }
 }
 
+// Collapsible Project Styles for Mobile
+.project.collapsible {
+    border: 1px solid var(--muted);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &.expanded {
+        background: rgba(var(--accent), 0.02);
+    }
+
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        padding: 0.875rem;
+        margin-bottom: 0;
+        background: var(--card);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        &:active {
+            transform: scale(0.99);
+        }
+
+        .project-title {
+            margin-bottom: 0;
+            font-size: 1rem;
+            flex: 1;
+
+            &::before {
+                display: none; // Hide bullet on mobile collapsible
+            }
+        }
+
+        .project-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+    }
+
+    .project-content {
+        overflow: hidden;
+        padding: 0 0.875rem 0.875rem;
+
+        .achievements {
+            margin-top: 0.5rem;
+        }
+    }
+}
+
+// Dark mode for collapsible
+[data-theme='dark'] {
+    .project.collapsible {
+        border-color: rgba(255, 255, 255, 0.1);
+
+        &.expanded {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .project-header {
+            &:hover {
+                background: rgba(255, 255, 255, 0.05);
+            }
+        }
+    }
+}
+
 // Responsive design
 @media (max-width: 768px) {
     .experience-section {
