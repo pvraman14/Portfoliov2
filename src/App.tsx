@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ThemeProvider, { useTheme } from './contexts/ThemeContext'
 import ThemeToggle from './components/ThemeToggle'
@@ -8,12 +8,15 @@ import './styles/app.scss'
 import Skills from './components/skills/Skills.tsx'
 import Tab from './components/tabs/Tabs.tsx'
 import Contact from './components/Contact.tsx'
+import ContactModal from './components/ContactModal.tsx'
 import Footer from './components/Footer.tsx'
 import { FaLinkedin, FaGithub, FaEnvelope, FaTerminal } from 'react-icons/fa'
 
 const AppContent: React.FC = () => {
   const { mounted } = useTheme()
-  const [isTerminalOpen, setIsTerminalOpen] = React.useState(false)
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     // keyboard shortcut to toggle the terminal (Ctrl/Cmd + `)
@@ -26,6 +29,18 @@ const AppContent: React.FC = () => {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  useEffect(() => {
+    // Detect mobile viewport
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   if (!mounted) return null
 
   return (
@@ -35,6 +50,16 @@ const AppContent: React.FC = () => {
           <header className="app__header">
             <h1 className="app__title">P Venkat Raman</h1>
             <div className="app__controls">
+              {isMobile && (
+                <button
+                  className="btn btn--icon btn--contact"
+                  aria-label="Open contact form"
+                  onClick={() => setIsContactModalOpen(true)}
+                  title="Contact Me"
+                >
+                  <FaEnvelope />
+                </button>
+              )}
               <ThemeToggle />
               <button
                 id="terminal-toggle"
@@ -152,12 +177,13 @@ const AppContent: React.FC = () => {
         </section> */}
           </main>
 
-          <Contact />
+          {!isMobile && <Contact />}
           <Footer />
         </>
       )}
 
       <Terminal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} id="dev-terminal" />
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
   )
 }

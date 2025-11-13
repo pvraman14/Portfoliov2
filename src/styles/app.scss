@@ -127,11 +127,65 @@
   }
 }
 
+// Contact button specific styles (mobile only)
+.btn--contact {
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  animation: pulse-contact 2s ease-in-out infinite;
+
+  &::before {
+    opacity: 1;
+    background: linear-gradient(135deg, #3b82f6, var(--accent));
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes pulse-contact {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+  }
+}
+
 // Dark mode button styles
 [data-theme='dark'] {
   .btn--icon {
     &:hover {
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+  }
+
+  .btn--contact {
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    }
+  }
+
+  @keyframes pulse-contact {
+    0%, 100% {
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    50% {
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.6);
     }
   }
 }
