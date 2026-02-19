@@ -11,8 +11,8 @@ type Props = {
 const COMMANDS: Record<string, string> = {
   help: `Available commands: help, about, projects, contact, clear`,
   about: `Hi — I'm P Venkat Raman, a frontend dev. I build React + TypeScript apps.`,
-  projects: `Type 'projects' to see project list in the UI.`,
-  contact: `Email: your.email@example.com`,
+  projects: `Coming Soon...`,
+  contact: `Email: pvenkatraman1400@gmail.com | LinkedIn: https://www.linkedin.com/in/p-venkat-raman/ | GitHub: https://github.com/pvraman14`,
 }
 
 const Terminal: React.FC<Props> = ({ id = 'dev-terminal', isOpen, onClose }) => {
