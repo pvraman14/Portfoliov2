@@ -10,7 +10,7 @@ type Props = {
 
 const COMMANDS: Record<string, string> = {
   help: `Available commands: help, about, projects, contact, clear`,
-  about: `Hi — I'm Your Name, a frontend dev. I build React + TypeScript apps.`,
+  about: `Hi — I'm P Venkat Raman, a frontend dev. I build React + TypeScript apps.`,
   projects: `Type 'projects' to see project list in the UI.`,
   contact: `Email: your.email@example.com`,
 }
