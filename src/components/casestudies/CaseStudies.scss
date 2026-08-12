@@ -1,0 +1,237 @@
+@use '../../styles/breakpoints' as bp;
+
+.studies {
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  &__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+
+    span {
+      font-variant-numeric: tabular-nums;
+      color: var(--ink-faint);
+    }
+
+    &:hover {
+      color: var(--ink);
+      border-color: var(--hairline-strong);
+    }
+
+    &.is-active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-wash);
+
+      span {
+        color: var(--accent);
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+}
+
+.study {
+  position: relative;
+  padding: var(--space-5) var(--space-5) var(--space-5) var(--space-6);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-sm);
+
+  // the severity stripe: kind is encoded in form, not just the label
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: var(--space-5);
+    bottom: var(--space-5);
+    width: 2px;
+    border-radius: 0 2px 2px 0;
+    background: var(--accent);
+  }
+
+  &--diagnosis::before {
+    background: var(--negative);
+  }
+
+  &--architecture::before {
+    background: var(--signal);
+  }
+
+  @include bp.below(bp.$mobile) {
+    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+  }
+
+  &__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  &__kind {
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    background: var(--accent-wash);
+    color: var(--accent);
+
+    &--diagnosis {
+      background: var(--negative-wash);
+      color: var(--negative);
+    }
+
+    &--architecture {
+      background: var(--signal-wash);
+      color: var(--signal);
+    }
+  }
+
+  &__repos {
+    color: var(--ink-soft);
+  }
+
+  &__when {
+    margin-left: auto;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: var(--leading-snug);
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  &__summary {
+    margin: 0 0 var(--space-4);
+    max-width: 74ch;
+    color: var(--ink-soft);
+    line-height: var(--leading-normal);
+  }
+
+  &__points {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
+    li {
+      position: relative;
+      padding-left: var(--space-4);
+      max-width: 78ch;
+      font-size: var(--text-sm);
+      line-height: var(--leading-normal);
+      color: var(--ink-soft);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--hairline-strong);
+      }
+    }
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px dashed var(--accent-ring);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      border-style var(--dur-fast) var(--ease-out);
+
+    svg {
+      transition: transform var(--dur-base) var(--ease-spring);
+    }
+
+    &:hover {
+      background: var(--accent-wash);
+    }
+
+    &.is-open {
+      border-style: solid;
+      background: var(--accent-wash);
+
+      svg {
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  &__reveal {
+    overflow: hidden;
+
+    p {
+      margin: var(--space-4) 0 0;
+      padding: var(--space-4);
+      max-width: 76ch;
+      border-left: 2px solid var(--accent);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      background: var(--accent-wash);
+      color: var(--ink);
+      font-size: var(--text-sm);
+      line-height: 1.68;
+    }
+  }
+
+  &__footnote {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--hairline);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+  }
+}

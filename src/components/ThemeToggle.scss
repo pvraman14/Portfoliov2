@@ -1,18 +1,17 @@
-// Theme toggle now uses the shared .btn--icon styles from app.scss
-// Add any theme-specific overrides here if needed
-
+// builds on the shared .btn--icon styles in app.scss
 .theme-toggle {
-  // Icon transition animation
   svg {
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
   }
 
   &:hover svg {
     transform: rotate(15deg) scale(1.1);
   }
 
-  // Add sun color when in light mode (not pressed/dark)
-  &[aria-pressed="true"] svg {
-    color: #f59e0b; // Amber/orange color for sun
+  // the sun reads warm rather than accent-teal
+  &[data-mode='dark'] svg {
+    color: var(--signal);
   }
 }
