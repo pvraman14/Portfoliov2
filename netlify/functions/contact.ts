@@ -1,4 +1,4 @@
-import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
+import { Handler, HandlerEvent } from '@netlify/functions';
 import * as nodemailer from 'nodemailer';
 
 interface ContactFormData {
@@ -7,7 +7,7 @@ interface ContactFormData {
   message: string;
 }
 
-const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+const handler: Handler = async (event: HandlerEvent) => {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {

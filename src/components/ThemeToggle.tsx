@@ -1,36 +1,33 @@
-import React from 'react'
-import { useTheme } from '../contexts/ThemeContext'
+import { useTheme } from '../hooks/useTheme'
 import { FaMoon, FaSun, FaDesktop } from 'react-icons/fa'
 import './ThemeToggle.scss'
 
-const ThemeToggle: React.FC = () => {
+const ThemeToggle = () => {
   const { theme, actualTheme, toggle } = useTheme()
 
-  const getIcon = () => {
-    if (theme === 'system') {
-      return <FaDesktop />
-    }
+  const icon = () => {
+    if (theme === 'system') return <FaDesktop />
     return actualTheme === 'dark' ? <FaSun /> : <FaMoon />
   }
 
-  const getTitle = () => {
+  const title = () => {
     if (theme === 'system') {
-      return `System theme (currently ${actualTheme}). Click for light mode`
+      return `Following system (currently ${actualTheme}). Switch to light`
     }
-    if (theme === 'light') {
-      return 'Light mode. Click for dark mode'
-    }
-    return 'Dark mode. Click for system theme'
+    if (theme === 'light') return 'Light. Switch to dark'
+    return 'Dark. Switch to following system'
   }
 
   return (
     <button
       className="btn btn--icon theme-toggle"
       onClick={toggle}
-      aria-label="Toggle theme"
-      title={getTitle()}
+      aria-label={title()}
+      title={title()}
+      data-mode={theme === 'system' ? 'system' : actualTheme}
+      type="button"
     >
-      {getIcon()}
+      {icon()}
     </button>
   )
 }

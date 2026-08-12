@@ -1,0 +1,182 @@
+@use '../../styles/breakpoints' as bp;
+
+.work {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+
+    @include bp.below(bp.$tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-5);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg);
+    background: var(--raised);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+
+    &:hover {
+      border-color: var(--accent-ring);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    // the first card carries the most substantial work — give it the full row
+    &:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  &__kind {
+    color: var(--accent);
+  }
+
+  &__when {
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-out);
+
+      svg {
+        font-size: 0.8em;
+        color: var(--ink-faint);
+        transition:
+          color var(--dur-fast) var(--ease-out),
+          transform var(--dur-fast) var(--ease-out);
+      }
+
+      &:hover {
+        color: var(--accent);
+
+        svg {
+          color: var(--accent);
+          transform: translate(2px, -2px);
+        }
+      }
+    }
+  }
+
+  &__summary {
+    margin: 0 0 var(--space-4);
+    max-width: 74ch;
+    color: var(--ink-soft);
+    line-height: var(--leading-normal);
+  }
+
+  &__points {
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-5);
+
+    @include bp.below(bp.$mobile) {
+      grid-template-columns: 1fr;
+    }
+
+    li {
+      position: relative;
+      padding-left: var(--space-4);
+      font-size: var(--text-sm);
+      line-height: var(--leading-snug);
+      color: var(--ink-soft);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 7px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &__stack {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: auto 0 0;
+    padding: 0;
+
+    li {
+      padding: 3px var(--space-2);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.03em;
+      color: var(--ink-faint);
+    }
+  }
+
+  &__playground {
+    margin: var(--space-6) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--hairline);
+    font-size: var(--text-sm);
+    color: var(--ink-faint);
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--hairline-strong);
+      transition:
+        color var(--dur-fast) var(--ease-out),
+        border-color var(--dur-fast) var(--ease-out);
+
+      svg {
+        font-size: 0.85em;
+      }
+
+      &:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+    }
+  }
+}

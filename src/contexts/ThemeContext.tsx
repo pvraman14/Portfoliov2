@@ -1,15 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-
-type Theme = 'light' | 'dark' | 'system'
-
-const ThemeContext = createContext({
-  theme: 'system' as Theme,
-  actualTheme: 'light' as 'light' | 'dark',
-  toggle: () => {},
-  mounted: false,
-})
-
-const LS_KEY = 'portfolio-theme'
+import { useEffect, useState } from 'react'
+import { LS_KEY, ThemeContext, type Theme } from './theme-context'
 
 const getSystemTheme = (): 'light' | 'dark' => {
   if (typeof window !== 'undefined' && window.matchMedia) {
@@ -18,64 +8,49 @@ const getSystemTheme = (): 'light' | 'dark' => {
   return 'light'
 }
 
-const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>('system')
   const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light')
   const [mounted, setMounted] = useState(false)
 
-  // Initialize theme from localStorage or system preference
   useEffect(() => {
     const stored = localStorage.getItem(LS_KEY) as Theme | null
-    const systemTheme = getSystemTheme()
 
-    if (stored && (stored === 'light' || stored === 'dark' || stored === 'system')) {
+    if (stored === 'light' || stored === 'dark' || stored === 'system') {
       setTheme(stored)
-      setActualTheme(stored === 'system' ? systemTheme : stored)
-      document.documentElement.setAttribute('data-theme', stored === 'system' ? systemTheme : stored)
     } else {
-      // Default to system theme
-      setTheme('system')
-      setActualTheme(systemTheme)
-      document.documentElement.setAttribute('data-theme', systemTheme)
       localStorage.setItem(LS_KEY, 'system')
     }
 
     setMounted(true)
   }, [])
 
-  // Listen for system theme changes
+  // keep the resolved theme in sync while the user is on 'system'
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
     const handleChange = (e: MediaQueryListEvent) => {
-      const newSystemTheme = e.matches ? 'dark' : 'light'
-
-      // Only update if user is using system theme
       if (theme === 'system') {
-        setActualTheme(newSystemTheme)
-        document.documentElement.setAttribute('data-theme', newSystemTheme)
+        const next = e.matches ? 'dark' : 'light'
+        setActualTheme(next)
+        document.documentElement.setAttribute('data-theme', next)
       }
     }
 
-    // Modern browsers
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener('change', handleChange)
       return () => mediaQuery.removeEventListener('change', handleChange)
     }
-    // Legacy browsers
-    else if (mediaQuery.addListener) {
-      mediaQuery.addListener(handleChange)
-      return () => mediaQuery.removeListener(handleChange)
-    }
+    mediaQuery.addListener(handleChange)
+    return () => mediaQuery.removeListener(handleChange)
   }, [theme])
 
-  // Update document and localStorage when theme changes
   useEffect(() => {
-    const themeToApply = theme === 'system' ? getSystemTheme() : theme
-    setActualTheme(themeToApply)
-    document.documentElement.setAttribute('data-theme', themeToApply)
+    const resolved = theme === 'system' ? getSystemTheme() : theme
+    setActualTheme(resolved)
+    document.documentElement.setAttribute('data-theme', resolved)
     localStorage.setItem(LS_KEY, theme)
   }, [theme])
 
@@ -94,5 +69,4 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   )
 }
 
-export const useTheme = () => useContext(ThemeContext)
 export default ThemeProvider

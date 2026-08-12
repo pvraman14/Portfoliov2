@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { ledger, profile } from '../data/profile'
+import { caseStudies } from '../data/caseStudies'
+import { roles } from '../data/experience'
+import { projects } from '../data/projects'
 import './Terminal.scss'
 
 type Props = {
@@ -8,81 +11,143 @@ type Props = {
   onClose: () => void
 }
 
-const COMMANDS: Record<string, string> = {
-  help: `Available commands: help, about, projects, contact, clear`,
-  about: `Hi — I'm P Venkat Raman, a frontend dev. I build React + TypeScript apps.`,
-  projects: `Coming Soon...`,
-  contact: `Email: pvenkatraman1400@gmail.com | LinkedIn: https://www.linkedin.com/in/p-venkat-raman/ | GitHub: https://github.com/pvraman14`,
+const HELP = [
+  'help        this list',
+  'whoami      who I am and what I do',
+  'ledger      the contribution numbers',
+  'roles       career trajectory',
+  'record      selected engineering work',
+  'work        independent projects',
+  'contact     how to reach me',
+  'clear       wipe the screen',
+]
+
+const buildOutput = (cmd: string): string[] => {
+  switch (cmd) {
+    case 'help':
+      return HELP
+    case 'whoami':
+      return [
+        `${profile.name} — ${profile.role}, ${profile.company}`,
+        profile.location,
+        '',
+        profile.bio,
+      ]
+    case 'ledger':
+      return ledger.map(
+        l =>
+          `${l.label.padEnd(24)} ${l.unit === '~' ? '~' : ''}${l.value}${l.unit && l.unit !== '~' ? l.unit : ''}`
+      )
+    case 'roles':
+      return roles.map(r => `${r.when.padEnd(24)} ${r.title} · ${r.company}`)
+    case 'record':
+      return caseStudies.map(s => `[${s.kind.padEnd(12)}] ${s.title}`)
+    case 'work':
+      return projects.map(p => `${p.kind.padEnd(22)} ${p.title}`)
+    case 'contact':
+      return [
+        `email     ${profile.links.email}`,
+        `github    ${profile.links.github}`,
+        `linkedin  ${profile.links.linkedin}`,
+      ]
+    default:
+      return [`command not found: ${cmd} — type 'help'`]
+  }
 }
 
-const Terminal: React.FC<Props> = ({ id = 'dev-terminal', isOpen, onClose }) => {
-  const [lines, setLines] = useState<string[]>(["Welcome to the dev terminal. Type 'help'."])
+const Terminal = ({ id = 'dev-terminal', isOpen, onClose }: Props) => {
+  const [lines, setLines] = useState<string[]>(["dev@portfolio — type 'help' to list commands."])
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const outputRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100)
+      const t = setTimeout(() => inputRef.current?.focus(), 80)
+      return () => clearTimeout(t)
     }
   }, [isOpen])
 
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isOpen, onClose])
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight
+    }
+  }, [lines])
+
   const run = (raw: string) => {
-    const cmd = raw.trim()
+    const cmd = raw.trim().toLowerCase()
     if (!cmd) return
-    if (cmd === 'clear') return setLines([])
-    const output = COMMANDS[cmd] ?? `Command not found: ${cmd}. Type 'help'.`
-    setLines(prev => [...prev, `> ${cmd}`, output])
+    if (cmd === 'clear') {
+      setLines([])
+      return
+    }
+    setLines(prev => [...prev, `$ ${cmd}`, ...buildOutput(cmd), ''])
   }
 
+  if (!isOpen) return null
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.aside
-          id={id}
-          key="terminal"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-          className="terminal terminal--fullscreen"
-          role="dialog"
-          aria-label="Developer terminal"
+    <aside
+      id={id}
+      className="terminal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Developer terminal"
+    >
+      <div className="terminal__header">
+        <span className="terminal__who">dev@portfolio</span>
+        <button
+          className="terminal__close"
+          onClick={onClose}
+          aria-label="Close terminal"
+          type="button"
         >
-          <div className="terminal__header">
-            <span>dev@portfolio</span>
-            <div className="terminal__controls">
-              <button onClick={onClose} aria-label="Close terminal">✕</button>
-            </div>
-          </div>
+          ✕
+        </button>
+      </div>
 
-          <div className="terminal__body">
-            <div className="terminal__output" aria-live="polite">
-              {lines.map((l, i) => (
-                <div key={i} className="terminal__line">
-                  {l}
-                </div>
-              ))}
+      <div className="terminal__body">
+        <div className="terminal__output" ref={outputRef} aria-live="polite">
+          {lines.map((line, i) => (
+            <div key={i} className={`terminal__line ${line.startsWith('$ ') ? 'is-echo' : ''}`}>
+              {line || ' '}
             </div>
+          ))}
+        </div>
 
-            <form
-              className="terminal__input"
-              onSubmit={e => {
-                e.preventDefault()
-                const v = inputRef.current?.value ?? ''
-                run(v)
-                if (inputRef.current) inputRef.current.value = ''
-              }}
-            >
-              <label className="sr-only">Terminal input</label>
-              <span className="terminal__prompt">$</span>
-              <input ref={inputRef} aria-label="Terminal command" autoComplete="off" />
-            </form>
-          </div>
-        </motion.aside>
-      )}
-    </AnimatePresence>
+        <form
+          className="terminal__input"
+          onSubmit={e => {
+            e.preventDefault()
+            run(inputRef.current?.value ?? '')
+            if (inputRef.current) inputRef.current.value = ''
+          }}
+        >
+          <label className="sr-only" htmlFor="terminal-command">
+            Terminal command
+          </label>
+          <span className="terminal__prompt" aria-hidden="true">
+            $
+          </span>
+          <input
+            id="terminal-command"
+            ref={inputRef}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="help"
+          />
+        </form>
+      </div>
+    </aside>
   )
 }
-
-Terminal.displayName = 'Terminal'
 
 export default Terminal

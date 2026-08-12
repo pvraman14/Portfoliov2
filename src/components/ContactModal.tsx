@@ -24,7 +24,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    message: ''
+    message: '',
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
@@ -86,7 +86,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       } else {
         throw new Error(data.error || 'Failed to send message')
       }
-
     } catch (error) {
       console.error('Error:', error)
       setSubmitStatus('error')
@@ -130,16 +129,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            onClick={(e) => e.stopPropagation()}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={e => e.stopPropagation()}
           >
             <div className="contact-modal__header">
               <h2 className="contact-modal__title">Get In Touch</h2>
-              <button
-                className="contact-modal__close"
-                onClick={onClose}
-                aria-label="Close modal"
-              >
+              <button className="contact-modal__close" onClick={onClose} aria-label="Close modal">
                 <FiX />
               </button>
             </div>
@@ -217,7 +212,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  Something went wrong. Please try again or email me directly at pvenkatraman1400@gmail.com
+                  Something went wrong. Please try again or email me directly at
+                  pvenkatraman1400@gmail.com
                 </motion.div>
               )}
             </form>

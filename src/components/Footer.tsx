@@ -1,52 +1,46 @@
-import React from 'react'
-import { FaLinkedin, FaGithub, FaEnvelope, FaHeart } from 'react-icons/fa'
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa'
+import { profile } from '../data/profile'
 import './Footer.scss'
 
-const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear()
-
-  return (
-    <footer className="footer">
-      <div className="footer__content">
-        <div className="footer__social">
-          <a
-            href="https://www.linkedin.com/in/p-venkat-raman-3083b9195/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__link"
-            aria-label="LinkedIn"
-          >
-            <FaLinkedin />
-          </a>
-          <a
-            href="https://github.com/pvraman14"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer__link"
-            aria-label="GitHub"
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="mailto:pvenkatraman1400@gmail.com"
-            className="footer__link"
-            aria-label="Email"
-          >
-            <FaEnvelope />
-          </a>
-        </div>
-        
-        <div className="footer__text">
-          <p>
-            Built with <FaHeart className="heart" /> using React, TypeScript, and Framer Motion
-          </p>
-          <p className="footer__copyright">
-            © {currentYear} P Venkat Raman. All rights reserved.
-          </p>
-        </div>
+const Footer = () => (
+  <footer className="footer">
+    <div className="footer__inner">
+      <div className="footer__social">
+        <a
+          href={profile.links.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer__link"
+          aria-label="LinkedIn profile"
+        >
+          <FaLinkedin />
+        </a>
+        <a
+          href={profile.links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer__link"
+          aria-label="GitHub profile"
+        >
+          <FaGithub />
+        </a>
+        <a
+          href={`mailto:${profile.links.email}`}
+          className="footer__link"
+          aria-label="Send an email"
+        >
+          <FaEnvelope />
+        </a>
       </div>
-    </footer>
-  )
-}
+
+      <p className="footer__meta">
+        React · TypeScript · SCSS · Framer Motion
+        <span>
+          © {new Date().getFullYear()} {profile.name}
+        </span>
+      </p>
+    </div>
+  </footer>
+)
 
 export default Footer

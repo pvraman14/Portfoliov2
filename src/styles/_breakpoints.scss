@@ -1,0 +1,24 @@
+// single source of truth for viewport boundaries
+// mobile mirrors useIsMobile.ts — change both together
+$mobile: 768px;
+$small: 480px;
+$tablet: 700px;
+$desktop: 1000px;
+
+@mixin below($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin from($width) {
+  @media (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

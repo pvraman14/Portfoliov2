@@ -1,28 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import ThemeProvider, { useTheme } from './contexts/ThemeContext'
+import { useEffect, useState } from 'react'
+import ThemeProvider from './contexts/ThemeContext'
+import { useTheme } from './hooks/useTheme'
+import { useIsMobile } from './hooks/useIsMobile'
 import ThemeToggle from './components/ThemeToggle'
-import Terminal from './components/Terminal.tsx'
-import Projects from './components/Projects'
+import Terminal from './components/Terminal'
+import Starfield from './components/Starfield'
+import Hero from './components/hero/Hero'
+import Section from './components/section/Section'
+import Trajectory from './components/trajectory/Trajectory'
+import CaseStudies from './components/casestudies/CaseStudies'
+import Systems from './components/systems/Systems'
+import Projects from './components/projects/Projects'
+import Contact from './components/Contact'
+import ContactModal from './components/ContactModal'
+import Footer from './components/Footer'
+import { FaEnvelope, FaTerminal } from 'react-icons/fa'
+import { profile } from './data/profile'
 import './styles/app.scss'
-import Skills from './components/skills/Skills.tsx'
-import Tab from './components/tabs/Tabs.tsx'
-import Contact from './components/Contact.tsx'
-import ContactModal from './components/ContactModal.tsx'
-import Footer from './components/Footer.tsx'
-import { FaLinkedin, FaGithub, FaEnvelope, FaTerminal } from 'react-icons/fa'
-import profileImage from './assets/profile2.png'
 
-const AppContent: React.FC = () => {
+const NAV = [
+  { href: '#trajectory', label: 'Trajectory' },
+  { href: '#record', label: 'Record' },
+  { href: '#systems', label: 'Systems' },
+  { href: '#work', label: 'Work' },
+]
+
+const AppContent = () => {
   const { mounted } = useTheme()
   const [isTerminalOpen, setIsTerminalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     // keyboard shortcut to toggle the terminal (Ctrl/Cmd + `)
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === '`') {
+        e.preventDefault()
         setIsTerminalOpen(prev => !prev)
       }
     }
@@ -30,170 +43,107 @@ const AppContent: React.FC = () => {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  useEffect(() => {
-    // Detect mobile viewport
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
   if (!mounted) return null
 
   return (
     <div className="app">
-      {!isTerminalOpen && (
-        <>
-          <header className="app__header">
-            <h1 className="app__title">P Venkat Raman</h1>
-            <div className="app__controls">
-              {isMobile && (
-                <button
-                  className="btn btn--icon btn--contact"
-                  aria-label="Open contact form"
-                  onClick={() => setIsContactModalOpen(true)}
-                  title="Contact Me"
-                >
-                  <FaEnvelope />
-                </button>
-              )}
-              <ThemeToggle />
-              <button
-                id="terminal-toggle"
-                className="btn btn--icon"
-                aria-label="Open terminal"
-                onClick={() => setIsTerminalOpen(true)}
-                title="Open Terminal (Ctrl/Cmd + `)"
-              >
-                <FaTerminal />
-              </button>
-            </div>
-          </header>
+      <Starfield />
 
-          <main className="app__main">
-        <section className="hero">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="hero__card"
+      <header className="app__header">
+        <a className="app__brand" href="#top">
+          <span className="app__brand-dot" aria-hidden="true" />
+          {profile.name}
+        </a>
+
+        {!isMobile && (
+          <nav className="app__nav" aria-label="Sections">
+            {NAV.map(item => (
+              <a key={item.href} href={item.href}>
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        <div className="app__controls">
+          {isMobile && (
+            <button
+              className="btn btn--icon"
+              aria-label="Open contact form"
+              onClick={() => setIsContactModalOpen(true)}
+              title="Contact me"
+            >
+              <FaEnvelope />
+            </button>
+          )}
+          <button
+            className="btn btn--icon"
+            aria-label="Open terminal"
+            onClick={() => setIsTerminalOpen(true)}
+            title="Open terminal (Ctrl/Cmd + `)"
           >
-            <motion.h2
-              className='hero__header'
-              initial={{ opacity: 0, scale: 0.8, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                ease: [0.6, -0.05, 0.01, 0.99]
-              }}
-            >
-              Think — Imagine — Develop.
-            </motion.h2>
+            <FaTerminal />
+          </button>
+          <ThemeToggle />
+        </div>
+      </header>
 
-            <motion.img
-              src={profileImage}
-              alt="Profile picture"
-              className='hero-logo'
-              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.4,
-                ease: "easeOut"
-              }}
-            />
+      <main className="app__main">
+        <Hero />
 
-            <motion.div
-              className="social-links"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <motion.a
-                href="https://www.linkedin.com/in/p-venkat-raman-3083b9195/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-links__item"
-                whileHover={{ scale: 1.1, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <FaLinkedin />
-              </motion.a>
+        <Section
+          id="trajectory"
+          eyebrow="Trajectory"
+          title="Four years on one platform, deliberately"
+          lede="Staying with a single product suite long enough to own its architecture — the shared library, the micro-frontend boundaries, and the migrations that touch all of them at once."
+        >
+          <Trajectory />
+        </Section>
 
-              <motion.a
-                href="https://github.com/pvraman14"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-links__item"
-                whileHover={{ scale: 1.1, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <FaGithub />
-              </motion.a>
+        <Section
+          id="record"
+          eyebrow="Engineering record"
+          title="Selected work, with the reasoning attached"
+          lede="Features, architecture, and diagnoses drawn from commit history across 27 repositories. Each entry opens to show how the problem was reasoned about — the part that usually goes unrecorded."
+        >
+          <CaseStudies />
+        </Section>
 
-              <motion.a
-                href="mailto:pvenkatraman1400@gmail.com"
-                className="social-links__item"
-                whileHover={{ scale: 1.1, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <FaEnvelope />
-              </motion.a>
-            </motion.div>
+        <Section
+          id="systems"
+          eyebrow="Systems"
+          title="What I reach for"
+          lede="Grouped by how central each one is to daily work rather than by category — the same ordering the orbital diagram above encodes."
+        >
+          <Systems />
+        </Section>
 
-            <motion.p
-              className="hero__description"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              Full-stack engineer building delightful application experiences, specializing in Frontend Technologies with React, NextJs, Angular and TypeScript.
-            </motion.p>
-          </motion.div>
-        </section>
-
-        <Skills/>
-
-        <Tab/>
-
-        {/* <section className="projects-section">
-          <h3>Projects</h3>
+        <Section
+          id="work"
+          eyebrow="Independent work"
+          title="Built outside the platform"
+          lede="Self-directed projects carried from an empty repository to something running."
+        >
           <Projects />
-        </section> */}
-{/* 
-        <section className="about-section">
-          <h3>About</h3>
-          <p>
-            I love building fast, accessible interfaces and learning new JS patterns. This portfolio is a
-            demo of a CLI-style interactive terminal, theming, and animated UI.
-          </p>
-        </section> */}
-          </main>
+        </Section>
+      </main>
 
-          {!isMobile && <Contact />}
-          <Footer />
-        </>
-      )}
+      {!isMobile && <Contact />}
+      <Footer />
 
-      <Terminal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} id="dev-terminal" />
+      <Terminal
+        isOpen={isTerminalOpen}
+        onClose={() => setIsTerminalOpen(false)}
+        id="dev-terminal"
+      />
       <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
   )
 }
 
-const App: React.FC = () => (
+const App = () => (
   <ThemeProvider>
-    <AnimatePresence>
-      <AppContent />
-    </AnimatePresence>
+    <AppContent />
   </ThemeProvider>
 )
 

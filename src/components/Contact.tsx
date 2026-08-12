@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import Reveal from './reveal/Reveal'
+import { profile } from '../data/profile'
 import './Contact.scss'
 
 interface FormData {
@@ -18,32 +19,32 @@ const Contact: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    message: ''
+    message: '',
   })
-  
+
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email'
     }
-    
+
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required'
     } else if (formData.message.trim().length < 10) {
       newErrors.message = 'Message must be at least 10 characters'
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -79,7 +80,6 @@ const Contact: React.FC = () => {
       } else {
         throw new Error(data.error || 'Failed to send message')
       }
-
     } catch (error) {
       console.error('Error:', error)
       setSubmitStatus('error')
@@ -104,41 +104,15 @@ const Contact: React.FC = () => {
 
   return (
     <section className="contact-section">
-      <motion.div
-        className="contact-container"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <motion.h2
-          className="contact-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          Get In Touch
-        </motion.h2>
-        
-        <motion.p
-          className="contact-subtitle"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Have a question or want to work together? Feel free to reach out!
-        </motion.p>
+      <Reveal className="contact-container">
+        <h2 className="contact-title">Get in touch</h2>
 
-        <motion.form
-          className="contact-form"
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <p className="contact-subtitle">
+          Open to conversations about platform and frontend engineering roles — or anything in this
+          record you want the longer version of.
+        </p>
+
+        <form className="contact-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
@@ -181,37 +155,23 @@ const Contact: React.FC = () => {
             {errors.message && <span className="error-message">{errors.message}</span>}
           </div>
 
-          <motion.button
-            type="submit"
-            className="submit-button"
-            disabled={isSubmitting}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </motion.button>
+          <button type="submit" className="submit-button" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending…' : 'Send message'}
+          </button>
 
           {submitStatus === 'success' && (
-            <motion.div
-              className="status-message success"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              Message sent successfully! I'll get back to you soon.
-            </motion.div>
+            <div className="status-message success" role="status">
+              Message sent. I'll get back to you soon.
+            </div>
           )}
 
           {submitStatus === 'error' && (
-            <motion.div
-              className="status-message error"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              Something went wrong. Please try again or email me directly at pvenkatraman1400@gmail.com
-            </motion.div>
+            <div className="status-message error" role="alert">
+              Something went wrong. Please try again, or email me directly at {profile.links.email}
+            </div>
           )}
-        </motion.form>
-      </motion.div>
+        </form>
+      </Reveal>
     </section>
   )
 }
