@@ -18,7 +18,6 @@ const CaseStudyCard = ({ study }: { study: CaseStudy }) => {
     <Reveal as="article" className={`study study--${study.kind}`}>
       <div className="study__top">
         <span className={`study__kind study__kind--${study.kind}`}>{kindLabel[study.kind]}</span>
-        <span className="study__repos">{study.repos.join(' · ')}</span>
         <span className="study__when">{study.when}</span>
       </div>
 
