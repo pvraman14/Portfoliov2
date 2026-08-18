@@ -2,7 +2,6 @@ export type CaseStudy = {
   id: string
   title: string
   kind: 'feature' | 'architecture' | 'diagnosis'
-  repos: string[]
   when: string
   summary: string
   points: string[]
@@ -21,7 +20,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'agentic-ai',
     title: 'Agentic AI authoring surface',
     kind: 'feature',
-    repos: ['ai-agents-fe'],
     when: 'Mar — Jun 2025',
     summary:
       'Built the front end for Aera’s agentic AI platform from the first screen onward — the authoring surface where users compose agents, agent teams, and agent functions.',
@@ -40,7 +38,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'standard-custom',
     title: 'Standard / Custom configuration mode for Action Item categories',
     kind: 'feature',
-    repos: ['cwb-manager'],
     when: 'Jul 2026',
     summary:
       'A dual-mode configuration system for Cognitive Workbench category schemas — the largest single feature in the record, delivered across six pull requests. Categories can be configured in a Standard mode (four locked, platform-owned interactions) or a Custom mode (a freely authored set), with a shared pool of user interactions rendering correctly in both.',
@@ -61,7 +58,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'axios-fleet',
     title: 'Coordinated axios upgrade across the micro-frontend fleet',
     kind: 'architecture',
-    repos: ['7 repositories'],
     when: 'Apr — May 2026',
     summary:
       'Drove a security-motivated axios upgrade simultaneously through ui3, discovery, discovery-v2, aera-dashboard-toolkit, aera-developer, aera-react-library, aera-skill-ui-builder, ai-agents-fe and aera-dataworkbench-ui — each starting from a different baseline version, and each pinned to Node 14 with an npm 6-era lockfile.',
@@ -79,7 +75,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'arl-tokens',
     title: 'Design-token theme migration for legacy Discovery',
     kind: 'architecture',
-    repos: ['discovery', 'aera-dashboard-toolkit', 'ui3'],
     when: 'May — Jun 2026',
     summary:
       'Migrated the legacy Discovery v1 stylesheet layer onto aera-react-library theme tokens — 56 files, 444 insertions — replacing hardcoded colour with tokens so the legacy app themes consistently with the rest of the platform.',
@@ -98,7 +93,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'route-gating',
     title: 'Route-level feature gating for trial projects',
     kind: 'diagnosis',
-    repos: ['ui3'],
     when: 'Aug 2026',
     summary:
       'Self-registered trial users could bypass feature hiding entirely by typing a route hash directly — #dashboards, #metadata, #reports and #monitors all rendered the full page, letting a trial user create custom metadata without the required permissions.',
@@ -117,7 +111,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'popup-flag',
     title: 'A sized View Details reverted to full screen on reload',
     kind: 'diagnosis',
-    repos: ['cwb-manager'],
     when: 'Jul 2026',
     summary:
       'Unticking "Full size" and entering explicit width/height didn’t stick — the inbox opened the process full screen, and the modal showed "Full size" selected again on reload.',
@@ -136,7 +129,6 @@ export const caseStudies: CaseStudy[] = [
     id: 'otp-shift',
     title: 'Backspacing a middle OTP box shifted every later digit left',
     kind: 'diagnosis',
-    repos: ['self-register-be'],
     when: 'Jul 2026',
     summary:
       'Clearing a middle box turned 123456 into 12456, which then rendered as 1,2,4,5,_ — every later digit slid one box left, and the emptied box could not be refilled.',

@@ -2,7 +2,7 @@ export const profile = {
   name: 'P Venkat Raman',
   role: 'Software Engineer II',
   company: 'Aera Technology',
-  location: 'Bengaluru, India',
+  location: 'Hyderabad, India',
   thesis: 'I build the platforms other engineers build on.',
   bio: 'Full-stack engineer working on platform frontends — shared component libraries, micro-frontend architecture, and the surfaces teams use to configure and ship. Four years on the Aera platform in React and TypeScript, after starting out in Angular.',
   links: {

@@ -29,11 +29,6 @@
       box-shadow: var(--shadow-md);
       transform: translateY(-3px);
     }
-
-    // the first card carries the most substantial work — give it the full row
-    &:first-child {
-      grid-column: 1 / -1;
-    }
   }
 
   &__top {
@@ -151,32 +146,25 @@
     }
   }
 
-  &__playground {
-    margin: var(--space-6) 0 0;
-    padding-top: var(--space-4);
-    border-top: 1px dashed var(--hairline);
-    font-size: var(--text-sm);
+  &__repo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: var(--space-4);
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
     color: var(--ink-faint);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
 
-    a {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      color: var(--ink-soft);
-      text-decoration: none;
-      border-bottom: 1px solid var(--hairline-strong);
-      transition:
-        color var(--dur-fast) var(--ease-out),
-        border-color var(--dur-fast) var(--ease-out);
+    svg {
+      font-size: 1.1em;
+    }
 
-      svg {
-        font-size: 0.85em;
-      }
-
-      &:hover {
-        color: var(--accent);
-        border-color: var(--accent);
-      }
+    &:hover {
+      color: var(--accent);
     }
   }
 }

@@ -1,5 +1,5 @@
-import { FiArrowUpRight } from 'react-icons/fi'
-import { playground, projects } from '../../data/projects'
+import { FiArrowUpRight, FiGithub } from 'react-icons/fi'
+import { projects } from '../../data/projects'
 import Reveal from '../reveal/Reveal'
 import './Projects.scss'
 
@@ -39,17 +39,21 @@ const Projects = () => (
               <li key={tech}>{tech}</li>
             ))}
           </ul>
+
+          {project.repo && (
+            <a
+              className="work__repo"
+              href={project.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiGithub aria-hidden="true" />
+              View source
+            </a>
+          )}
         </Reveal>
       ))}
     </div>
-
-    <p className="work__playground">
-      {playground.label} — {playground.note}{' '}
-      <a href={playground.href} target="_blank" rel="noopener noreferrer">
-        Browse them
-        <FiArrowUpRight aria-hidden="true" />
-      </a>
-    </p>
   </div>
 )
 
